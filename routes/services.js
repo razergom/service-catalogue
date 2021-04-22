@@ -1,5 +1,6 @@
 const express = require('express')
 const axios = require('axios')
+const yaml = require('js-yaml')
 const gh = require('parse-github-url')
 const Service = require('../models/service')
 
@@ -14,14 +15,26 @@ router.get('/', async (req, res) => {
 	}
 })
 
-router.post('/', async (req, res) => {
-	const parsedGithubUrl = gh(req.body.url)
+router.post('/register', async (req, res) => {
+	const parsedGithubData = gh(req.body.url)
 
-	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubUrl.repository}/contents/${parsedGithubUrl.filepath}`
+	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/${parsedGithubData.filepath}`
 
 	axios.get(githubApiFileUrl)
-		.then(response => res.json(Buffer.from(response.data.content, 'base64').toString()))
-		.catch(err => res.status(500).json({ message: err.message }))
+		.then(async response => {
+			try {
+				const serviceConfig = yaml.load(Buffer.from(response.data.content, 'base64').toString())
+
+				const service = new Service(serviceConfig)
+
+				const savedService = await service.save()
+
+				res.status(201).json(savedService)
+			} catch (err) {
+				res.status(400).json({ message: err.message })
+			}
+		})
+		.catch(err => res.status(404).json({ message: err.message }))
 })
 
 module.exports = router
