@@ -1,4 +1,5 @@
 const express = require('express')
+const gh = require('parse-github-url')
 const Service = require('../models/service')
 
 const router = express.Router()
@@ -13,22 +14,11 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-	// Временно, для теста, вместо этого файл с данными будет браться из нужного репозитория
-	const service = new Service({
-		name: req.body.name,
-		description: req.body.description,
-		version: req.body.version,
-		tags: req.body.tags,
-		links: req.body.links,
-		spec: req.body.spec,
-	})
+	const parsedGithubUrl = gh(req.body.url)
 
-	try {
-		const newService = await service.save()
-		res.status(201).json(newService)
-	} catch (err) {
-		res.status(400).json({ message: err.message })
-	}
+	const gitHubApiFileUrl = `https://api.github.com/repos/${parsedGithubUrl.repository}/contents/${parsedGithubUrl.filepath}`
+
+	res.json(gitHubApiFileUrl)
 })
 
 module.exports = router
