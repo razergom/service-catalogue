@@ -171,4 +171,94 @@ router.patch('/:id/builds/:buildId/fail_build', getService, getBuild, async (req
 	}
 })
 
+router.patch('/:id/builds/:buildId/tests', getService, getBuild, async (req, res) => {
+	try {
+		const service = res.service
+		const build = res.build
+
+		if (build.testResult) {
+			return res.status(200).json({ message: 'already exists' })
+		}
+
+		let fileData = null
+
+		const testData = {
+			status: req.body.status,
+			coverage: req.body.coverage,
+		}
+
+		if (req.body.testReport) {
+			fileData = req.files.find(f => f.fieldname === 'testReport[data]')
+
+			if (!fileData) {
+				return res.status(400).json({ message: 'test report file not provided' })
+			}
+
+			testData.testReport = {
+				filename: req.body.testReport.filename,
+				data: fileData.buffer
+			}
+		}
+
+		service.builds = service.builds.map(b => {
+			if (b.id === build.id) {
+				b.testResult = {
+					status: testData.status,
+					coverage: testData.coverage,
+					testReport: {
+						filename: testData.testReport.filename,
+						data: testData.testReport.data,
+					},
+				}
+
+				return b
+			}
+
+			return b
+		})
+
+		await service.save()
+
+		res.status(200).json(build)
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+})
+
+router.patch('/:id/builds/:buildId/changelog', getService, getBuild, async (req, res) => {
+	try {
+		const service = res.service
+		const build = res.build
+
+		if (build.changelog) {
+			return res.status(200).json({ message: 'already exists' })
+		}
+
+		const fileData = req.files.find(f => f.fieldname === 'data')
+
+		if (!fileData) {
+			return res.status(400).json({ message: 'test report file not provided' })
+		}
+
+		service.builds = service.builds.map(b => {
+			if (b.id === build.id) {
+				b.changelog = {
+					filename: req.body.filename,
+					data: fileData.buffer,
+				}
+
+				return b
+			}
+
+			return b
+		})
+
+		await service.save()
+
+		res.status(200).json(build)
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+})
+
 module.exports = router
