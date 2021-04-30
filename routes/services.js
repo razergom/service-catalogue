@@ -6,6 +6,16 @@ const Service = require('../models/service')
 
 const router = express.Router()
 
+const getFileContentFromGithub = async (githubUrl) => {
+	const parsedGithubData = gh(githubUrl)
+
+	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/${parsedGithubData.filepath}`
+
+	return axios.get(githubApiFileUrl)
+}
+
+const extractYamlConfig = (data) => yaml.load(Buffer.from(data, 'base64').toString())
+
 const getService = async (req, res, next) => {
 	try {
 		const service = await Service.findById(req.params.id)
@@ -48,17 +58,15 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-	const parsedGithubData = gh(req.body.url)
-
-	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/${parsedGithubData.filepath}`
-
-	axios.get(githubApiFileUrl)
+	getFileContentFromGithub(req.body.url)
 		.then(async response => {
 			try {
-				const serviceConfig = yaml.load(Buffer.from(response.data.content, 'base64').toString())
+				const serviceConfig = extractYamlConfig(response.data.content)
 
 				if (serviceConfig.links) {
 					serviceConfig.links = [...serviceConfig.links, { title: 'Service Metadata Source', url: req.body.url }]
+				} else {
+					serviceConfig.links = [{ title: 'Service Metadata Source', url: req.body.url }]
 				}
 
 				const service = new Service(serviceConfig)
@@ -71,6 +79,50 @@ router.post('/register', async (req, res) => {
 			}
 		})
 		.catch(err => res.status(404).json({ message: err.message }))
+})
+
+router.put('/:id', getService, async (req, res) => {
+	try {
+		const service = res.service
+
+		const githubLink = service.links.find(link => link.title === 'Service Metadata Source')
+
+		if (!githubLink) {
+			return res.status(404).json({ message: 'metadata source not provided.' })
+		}
+
+		getFileContentFromGithub(githubLink.url)
+			.then(async response => {
+				try {
+					const serviceConfig = extractYamlConfig(response.data.content)
+
+					if (serviceConfig.links) {
+						serviceConfig.links = [...serviceConfig.links, { title: 'Service Metadata Source', url: req.body.url }]
+					} else {
+						serviceConfig.links = [{ title: 'Service Metadata Source', url: req.body.url }]
+					}
+
+					serviceConfig.builds = service.builds
+
+					await Service.replaceOne({ _id: service._id }, serviceConfig)
+
+					const updatedService = await Service.findById(req.params.id)
+
+					if (!updatedService) {
+						return res.status(404).json({ message: 'service not found.' })
+					}
+
+					res.status(200).json(updatedService)
+				} catch (err) {
+					res.status(400).json({ message: err.message })
+				}
+			})
+			.catch(err => {
+				res.status(404).json({ message: err.message })
+			})
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
 })
 
 router.get('/:id', getService, async (req, res) => {
@@ -196,7 +248,7 @@ router.patch('/:id/builds/:buildId/tests', getService, getBuild, async (req, res
 
 			testData.testReport = {
 				filename: req.body.testReport.filename,
-				data: fileData.buffer
+				data: fileData.buffer.data,
 			}
 		}
 
@@ -244,7 +296,7 @@ router.patch('/:id/builds/:buildId/changelog', getService, getBuild, async (req,
 			if (b.id === build.id) {
 				b.changelog = {
 					filename: req.body.filename,
-					data: fileData.buffer,
+					data: fileData.buffer.data,
 				}
 
 				return b
