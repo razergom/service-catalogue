@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
+const cors = require('cors');
 const bodyParser = require('body-parser')
 
 const serviceRouter = require('./routes/services')
@@ -20,6 +21,10 @@ const db = mongoose.connection
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(upload.any())
+app.use(cors());
+
+app.options('*', cors());
+
 app.use('/services', serviceRouter)
 
 app.listen(3000, () => console.log('Server started on port 3000'))
