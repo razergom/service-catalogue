@@ -17,6 +17,8 @@ const $path = breadCrumbsDomain
     .on(addPath, (path, newPath) => [...path, newPath])
     .on(addFullPath, (path, fullPath) => [...path, ...fullPath])
 
+$path.watch(console.log)
+
 export const breadCrumbsModel = {
     $path,
     addPath,

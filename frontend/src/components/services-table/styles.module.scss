@@ -1,0 +1,12 @@
+.table {
+  height: 100%;
+}
+
+.linkCell {
+  color: blue;
+  
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

@@ -16,12 +16,13 @@ const $services = servicesDomain.createStore<ServiceDto[]>([])
 
 $services.on(getServicesFx.doneData, (_, services) => services)
 
-$services.watch(console.log)
-
 forward({ from: gate.open, to: getServicesFx })
 forward({ from: gate.close, to: destroy })
 
+const $isLoading = getServicesFx.pending
+
 export const servicesModel = {
     gate,
+    $isLoading,
     $services,
 }
