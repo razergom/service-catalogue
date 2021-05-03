@@ -1,0 +1,51 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  > .content {
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+
+    position: relative;
+
+    background-color: white;
+    padding: 40px 50px 50px 50px;
+
+    max-width: 650px;
+
+    &:focus {
+      outline: none;
+    }
+
+    > .description {
+      font-size: 14px;
+      line-height: 18px;
+      color: gray;
+      text-align: center;
+    }
+
+    > .title {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 30px;
+      color: black;
+    }
+
+    > .control {
+      > button {
+
+        min-width: 128px;
+
+        &:not(:last-child) {
+          margin-right: 30px;
+        }
+      }
+    }
+  }
+}
