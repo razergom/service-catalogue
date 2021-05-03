@@ -10,19 +10,22 @@ const servicesDomain = createDomain()
 
 const destroy = servicesDomain.createEvent()
 
+const updateServices = servicesDomain.createEvent()
+
 servicesDomain.onCreateStore((store) => store.reset(destroy))
 
 const $services = servicesDomain.createStore<ServiceDto[]>([])
 
 $services.on(getServicesFx.doneData, (_, services) => services)
 
-forward({ from: gate.open, to: getServicesFx })
+forward({ from: [gate.open, updateServices], to: getServicesFx })
 forward({ from: gate.close, to: destroy })
 
 const $isLoading = getServicesFx.pending
 
 export const servicesModel = {
     gate,
+    updateServices,
     $isLoading,
     $services,
 }

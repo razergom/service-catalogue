@@ -59,7 +59,7 @@ export const ServicesTable = (props: ServicesTableProps) => {
                         <StyledTableCell align="left">tags</StyledTableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className={styles.tableBody}>
                     {services.map((service) => (
                         <StyledTableRow key={service._id}>
                             <StyledTableCell component="th" scope="row">

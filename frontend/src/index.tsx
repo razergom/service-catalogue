@@ -2,12 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history'
 import { App } from './App'
+import { ToastContainer } from 'react-toastify'
 import { BrowserRouter, Router } from 'react-router-dom'
+import 'react-toastify/dist/ReactToastify.css'
 import './styles/styles.scss'
 
 const Index = () => (
     <Router history={createBrowserHistory()}>
         <App />
+        <ToastContainer
+            position="top-right"
+            hideProgressBar
+            newestOnTop
+            closeOnClick
+            rtl
+            draggable
+            pauseOnHover
+            autoClose={3000}
+            pauseOnFocusLoss={false}
+        />
     </Router>
 )
 

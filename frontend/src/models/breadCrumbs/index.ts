@@ -1,1 +1,0 @@
-export { breadCrumbsModel } from './breadCrumbs'

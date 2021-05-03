@@ -16,3 +16,7 @@ export type ServiceDto = {
         owner: string
     }
 }
+
+export type RegisterServiceDto = {
+    url: string
+}
