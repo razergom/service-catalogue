@@ -1,9 +1,14 @@
 .table {
-  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: -1px 5px 18px -8px rgba(34, 60, 80, 0.52);
 
   height: 100%;
 
+  .subInfo {
+    padding: 30px;
+  }
+
   .tableBody {
+
     .tags {
       display: flex;
       align-items: center;

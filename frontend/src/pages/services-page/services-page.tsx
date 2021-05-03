@@ -11,9 +11,20 @@ import { Search } from '@material-ui/icons'
 import styles from './styles.module.scss'
 
 export const ServicesPage = () => {
-    const { services, isLoading, isRemoving, removeConfirmationModalIsOpened } = useStore(servicesModel.pageData)
+    const {
+        services,
+        searchString,
+        isLoading,
+        isRemoving,
+        removeConfirmationModalIsOpened,
+    } = useStore(servicesModel.pageData)
 
     useGate(servicesModel.gate)
+
+    const currentServices = searchString === '' ? services : services.filter((s) => s.searchFlag)
+
+    const notFound = currentServices.length === 0 && services.length !== 0
+    const noServices = services.length === 0
 
     return (
         <div className={styles.pageContent}>
@@ -42,7 +53,8 @@ export const ServicesPage = () => {
                 </Button>
                 <TextField
                     placeholder="search..."
-                    value=""
+                    value={searchString}
+                    onChange={(e) => servicesModel.onChangeSearchString(e.target.value)}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -55,7 +67,16 @@ export const ServicesPage = () => {
             <RegisterServiceModal />
             {isLoading && <Loader className={styles.loader} /> }
             {!isLoading && (
-                <ServicesTable services={services} />
+                <ServicesTable
+                    services={currentServices}
+                    searchData={
+                        {
+                            searchString: searchString,
+                            notFound: notFound,
+                            noServices: noServices,
+                        }
+                    }
+                />
             )}
         </div>
     )

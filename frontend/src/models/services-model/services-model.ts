@@ -17,6 +17,8 @@ const closeRemoveConfirmationModal = servicesDomain.createEvent()
 
 const updateServices = servicesDomain.createEvent()
 
+const onChangeSearchString = servicesDomain.createEvent<string>()
+
 const removeService = servicesDomain.createEvent()
 
 servicesDomain.onCreateStore((store) => store.reset(destroy))
@@ -25,9 +27,14 @@ const $services = servicesDomain.createStore<ServiceDto[]>([])
 
 const $idOfRemoved = servicesDomain.createStore<ServiceId | null>(null)
 
+const $searchString = servicesDomain.createStore<string>('')
+
 const $removeConfirmationModalIsOpened = servicesDomain.createStore<boolean>(false)
 
 $services.on(getServicesFx.doneData, (_, services) => services)
+
+$searchString
+    .on(onChangeSearchString, (_, value) => value)
 
 $idOfRemoved
     .on(openRemoveConfirmationModal, (_, id) => id)
@@ -38,6 +45,18 @@ $removeConfirmationModalIsOpened
     .reset([closeRemoveConfirmationModal, removeServiceFx.done])
 
 const $canRemove = $idOfRemoved.map(id => id !== null).reset([closeRemoveConfirmationModal, destroy])
+
+sample({
+    source: combine({ services: $services, searchString: $searchString }),
+    clock: [$searchString.updates, getServicesFx.done],
+    target: $services,
+    fn: ({ services, searchString }) =>
+        services.map(service => {
+            service.searchFlag = service.name.trim().toLowerCase().includes(searchString.trim().toLowerCase())
+
+            return service
+        })
+})
 
 guard({
     source: sample($idOfRemoved, removeService),
@@ -62,8 +81,10 @@ export const servicesModel = {
     openRemoveConfirmationModal,
     closeRemoveConfirmationModal,
     removeService,
+    onChangeSearchString,
     pageData: combine({
         services: $services,
+        searchString: $searchString,
         removeConfirmationModalIsOpened: $removeConfirmationModalIsOpened,
         isLoading: $isLoading,
         isRemoving: $isRemoving,

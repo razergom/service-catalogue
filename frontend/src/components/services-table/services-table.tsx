@@ -43,6 +43,11 @@ const useStyles = makeStyles({
 
 type ServicesTableProps = {
     services: ServiceDto[]
+    searchData?: {
+        noServices: boolean
+        notFound: boolean
+        searchString: string
+    }
 }
 
 export const ServicesTable = (props: ServicesTableProps) => {
@@ -71,38 +76,46 @@ export const ServicesTable = (props: ServicesTableProps) => {
                     </TableRow>
                 </TableHead>
                 <TableBody className={styles.tableBody}>
-                    {services.map((service) => (
-                        <StyledTableRow key={service._id}>
-                            <StyledTableCell component="th" scope="row">
-                                <div className={styles.linkCell}>{service.name}</div>
-                            </StyledTableCell>
-                            <StyledTableCell align="left">
-                                {service.spec?.owner ?? '-'}
-                            </StyledTableCell>
-                            <StyledTableCell align="left">
-                                {service.spec?.lifecycle ?? '-'}
-                            </StyledTableCell>
-                            <StyledTableCell align="left">
-                                {service.description ? service.description : '-'}
-                            </StyledTableCell>
-                            <StyledTableCell align="left">
-                                {service.tags.length !== 0 && (
-                                    <div className={styles.tags}>
-                                        {service.tags.map(tag => (
-                                            <div key={Math.random() * Date.now()} className={styles.tag}>{tag}</div>
-                                        ))}
-                                    </div>
-                                )}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                <IconButton onClick={() => servicesModel.openRemoveConfirmationModal(service._id)}>
-                                    <Delete />
-                                </IconButton>
-                            </StyledTableCell>
-                        </StyledTableRow>
-                    ))}
+                    {!props.searchData?.notFound && !props.searchData?.noServices && (
+                        services.map((service) => (
+                            <StyledTableRow key={service._id}>
+                                <StyledTableCell component="th" scope="row">
+                                    <div className={styles.linkCell}>{service.name}</div>
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {service.spec?.owner ?? '-'}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {service.spec?.lifecycle ?? '-'}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {service.description ? service.description : '-'}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {service.tags.length !== 0 && (
+                                        <div className={styles.tags}>
+                                            {service.tags.map(tag => (
+                                                <div key={Math.random() * Date.now()} className={styles.tag}>{tag}</div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </StyledTableCell>
+                                <StyledTableCell align="right">
+                                    <IconButton onClick={() => servicesModel.openRemoveConfirmationModal(service._id)}>
+                                        <Delete />
+                                    </IconButton>
+                                </StyledTableCell>
+                            </StyledTableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
+            {props.searchData?.noServices && (
+                <div className={styles.subInfo}>No services.</div>
+            )}
+            {props.searchData?.notFound && (
+                <div className={styles.subInfo}>No results for "{props.searchData.searchString}".</div>
+            )}
         </TableContainer>
     )
 }

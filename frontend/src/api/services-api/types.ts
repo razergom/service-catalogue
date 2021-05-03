@@ -15,6 +15,7 @@ export type ServiceDto = {
         lifecycle: string
         owner: string
     }
+    searchFlag?: boolean
 }
 
 export type RegisterServiceDto = {
