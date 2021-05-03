@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper'
 import { IconButton } from '@material-ui/core'
 import { ServiceDto } from '../../api/services-api'
 import { Delete } from '@material-ui/icons'
+import { Tag } from '../tag'
 import styles from './styles.module.scss'
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -95,7 +96,9 @@ export const ServicesTable = (props: ServicesTableProps) => {
                                     {service.tags.length !== 0 && (
                                         <div className={styles.tags}>
                                             {service.tags.map(tag => (
-                                                <div key={Math.random() * Date.now()} className={styles.tag}>{tag}</div>
+                                                <div key={Math.random() * Date.now()}>
+                                                    <Tag value={tag} />
+                                                </div>
                                             ))}
                                         </div>
                                     )}
