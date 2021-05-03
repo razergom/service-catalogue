@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { browserHistory } from './models/browser-history'
 import { App } from './App'
 import { ToastContainer } from 'react-toastify'
-import { BrowserRouter, Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/styles.scss'
 
@@ -25,8 +25,6 @@ const Index = () => (
 )
 
 ReactDOM.render(
-  <BrowserRouter>
-      <Index />
-  </BrowserRouter>,
+  <Index />,
   document.getElementById('root')
 );

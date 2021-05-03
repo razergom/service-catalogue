@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGate, useStore } from 'effector-react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { serviceInfoModel } from '../../models/service-info-model'
 import { ServiceId } from '../../api/services-api'
 import { IdBanner } from '../../components/id-banner'
@@ -12,7 +12,11 @@ export const ServiceInfoPage = () => {
     const { id }: any = useParams()
     useGate(serviceInfoModel.gate, id as ServiceId)
 
+    const history = useHistory()
+
     const { service, isLoading } = useStore(serviceInfoModel.serviceInfoPage)
+
+    const handleRedirect = () => history.push('/services')
 
     if (isLoading) {
         return <Loader className={styles.loader} />
@@ -24,8 +28,13 @@ export const ServiceInfoPage = () => {
 
     return (
         <div className={styles.page}>
-            <Button className={styles.btn} variant="contained" color="default">
-                back to services
+            <Button
+                className={styles.btn}
+                variant="contained"
+                color="primary"
+                onClick={handleRedirect}
+            >
+                Back to services
             </Button>
             <IdBanner idValue={service._id} name={service.name} />
             <div className={styles.content}>

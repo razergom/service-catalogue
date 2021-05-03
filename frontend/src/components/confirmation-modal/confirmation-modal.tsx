@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, IconButton } from '@material-ui/core'
+import { Modal } from '@material-ui/core'
 import { Button } from '@material-ui/core'
 import styles from './styles.module.scss'
 
@@ -26,7 +26,7 @@ export const ConfirmationModal = (props: ConfirmationModalProps) => {
                         <Button
                             disabled={props.acceptDisabled}
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             onClick={props.onAccept}
                         >
                             {props.acceptText}
