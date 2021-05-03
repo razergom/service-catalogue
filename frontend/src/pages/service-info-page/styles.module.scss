@@ -1,0 +1,56 @@
+.page {
+  .btn {
+    margin-bottom: 30px;
+  }
+
+  .content {
+    width: 100%;
+
+    padding: 30px 50px;
+
+    display: grid;
+    grid-template-columns: 1fr 0.5fr;
+
+    font-size: 24px;
+    color: #828282;
+
+    h3 {
+      color: black;
+    }
+
+    .serviceContent {
+      div {
+        margin-bottom: 10px;
+      }
+    }
+
+    .links {
+      margin-top: 8px;
+      font-size: 14px;
+
+      h3 {
+        font-size: 24px;
+      }
+
+      .link {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 500px;
+
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 48%;
+}
+
+.param {
+  font-weight: bold;
+  color: black;
+}

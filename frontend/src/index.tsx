@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history'
+import { browserHistory } from './models/browser-history'
 import { App } from './App'
 import { ToastContainer } from 'react-toastify'
 import { BrowserRouter, Router } from 'react-router-dom'
@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import './styles/styles.scss'
 
 const Index = () => (
-    <Router history={createBrowserHistory()}>
+    <Router history={browserHistory}>
         <App />
         <ToastContainer
             position="top-right"
@@ -25,6 +25,8 @@ const Index = () => (
 )
 
 ReactDOM.render(
-  <Index />,
+  <BrowserRouter>
+      <Index />
+  </BrowserRouter>,
   document.getElementById('root')
 );

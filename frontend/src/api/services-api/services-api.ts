@@ -8,6 +8,12 @@ export const servicesApi = {
         return res.data
     },
 
+    getById: async (id: ServiceId): Promise<ServiceDto> => {
+        const res = await axiosApi.get(`/services/${id}`)
+
+        return res.data
+    },
+
     registerService: async (registerServiceData: RegisterServiceDto): Promise<ServiceDto> => {
         const res = await axiosApi.post('/services/register', registerServiceData)
 

@@ -1,0 +1,19 @@
+.idBanner {
+  height: max-content;
+  width: 100%;
+
+  color: black;
+
+  padding: 30px 50px;
+
+  background-color: rgba(0, 0, 0, 0.05);
+  box-shadow: -2px 7px 12px 0px rgba(34, 60, 80, 0.2);
+
+  font-size: 32px;
+  font-weight: 500;
+
+  h2 {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+}

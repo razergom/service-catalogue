@@ -13,6 +13,7 @@ import { ServiceDto } from '../../api/services-api'
 import { Delete } from '@material-ui/icons'
 import { Tag } from '../tag'
 import styles from './styles.module.scss'
+import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
@@ -81,7 +82,9 @@ export const ServicesTable = (props: ServicesTableProps) => {
                         services.map((service) => (
                             <StyledTableRow key={service._id}>
                                 <StyledTableCell component="th" scope="row">
-                                    <div className={styles.linkCell}>{service.name}</div>
+                                    <Link to={`/services/${service._id}`}>
+                                        <div className={styles.linkCell}>{service.name}</div>
+                                    </Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
                                     {service.spec?.owner ?? '-'}
