@@ -3,10 +3,24 @@
     margin-bottom: 30px;
   }
 
+  .tabs {
+    padding: 0 50px;
+
+    margin-top: 30px;
+    margin-bottom: 20px;
+    background-color: #e9e9e9;
+
+    .tab {
+      background-color: #e9e9e9;
+    }
+  }
+
   .content {
     width: 100%;
 
     padding: 30px 50px;
+
+    padding-top: 0;
 
     display: grid;
     grid-template-columns: 1fr 0.5fr;
@@ -19,6 +33,8 @@
     }
 
     .serviceContent {
+      margin-top: 27px;
+
       div {
         margin-bottom: 10px;
       }
@@ -39,6 +55,61 @@
         width: 500px;
 
         margin-bottom: 5px;
+      }
+    }
+  }
+
+  .buildsContent {
+    width: 100%;
+
+    padding: 30px 50px;
+    padding-top: 5px;
+
+    font-size: 24px;
+
+    .subInfo {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #828282;
+    }
+
+    .searchInput {
+      margin-bottom: 20px;
+    }
+
+    .builds {
+      height: 280px;
+      overflow-y: auto;
+
+      .build {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+
+        padding: 10px;
+        font-size: 14px;
+
+        font-weight: bold;
+
+        border: 1px solid rgba(black, 0.1);
+        border-radius: 4px;
+
+        margin-bottom: 10px;
+
+        .testWrapper {
+        }
+
+        &.borderRed {
+          background-color: rgba(red, 0.1);
+        }
+
+        &.borderGreen {
+          background-color: rgba(green, 0.1);
+        }
+
+        &.borderBlue {
+          background-color: rgba(blue, 0.025);
+        }
       }
     }
   }
