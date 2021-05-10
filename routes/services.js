@@ -14,6 +14,16 @@ const getFileContentFromGithub = async (githubUrl) => {
 	return axios.get(githubApiFileUrl)
 }
 
+const getPackageJsonFromGithub = async (githubUrl) => {
+	const parsedGithubData = gh(githubUrl)
+
+	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/package.json`
+
+	const res = await axios.get(githubApiFileUrl)
+
+	return res.data
+}
+
 const extractYamlConfig = (data) => yaml.load(Buffer.from(data, 'base64').toString())
 
 const getService = async (req, res, next) => {
@@ -308,6 +318,32 @@ router.patch('/:id/builds/:buildId/changelog', getService, getBuild, async (req,
 		await service.save()
 
 		res.status(200).json(build)
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+})
+
+router.get('/audit/es', async (req, res) => {
+	try {
+		const services = await Service.find()
+		const esServices = services.filter(s => s.tags.includes('js') || s.tags.includes('ts'))
+
+		let esServicesPackageJsons = []
+
+		console.log(esServices)
+
+		for (let i = 0; i < esServices.length; i++) {
+			const esService = esServices[i]
+
+			const githubLink = esService.links.find(link => link.title === 'Service Metadata Source')
+
+			if (githubLink) {
+				const packageJson = await getPackageJsonFromGithub(githubLink.url)
+				esServicesPackageJsons.push(JSON.parse(Buffer.from(packageJson.content, 'base64').toString()))
+			}
+		}
+
+		res.status(200).json(esServicesPackageJsons)
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
