@@ -1,6 +1,7 @@
 const express = require('express')
 const axios = require('axios')
 const yaml = require('js-yaml')
+const runNpmAudit = require('run-npm-audit')
 const gh = require('parse-github-url')
 const Service = require('../models/service')
 
@@ -18,6 +19,16 @@ const getPackageJsonFromGithub = async (githubUrl) => {
 	const parsedGithubData = gh(githubUrl)
 
 	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/package.json`
+
+	const res = await axios.get(githubApiFileUrl)
+
+	return res.data
+}
+
+const getPackageLockFromGithub = async (githubUrl) => {
+	const parsedGithubData = gh(githubUrl)
+
+	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/package-lock.json`
 
 	const res = await axios.get(githubApiFileUrl)
 
@@ -330,8 +341,6 @@ router.get('/audit/es', async (req, res) => {
 
 		let esServicesPackageJsons = []
 
-		console.log(esServices)
-
 		for (let i = 0; i < esServices.length; i++) {
 			const esService = esServices[i]
 
@@ -339,7 +348,16 @@ router.get('/audit/es', async (req, res) => {
 
 			if (githubLink) {
 				const packageJson = await getPackageJsonFromGithub(githubLink.url)
-				esServicesPackageJsons.push(JSON.parse(Buffer.from(packageJson.content, 'base64').toString()))
+				const packageLock = await getPackageLockFromGithub(githubLink.url)
+
+				const packageJsonParsed = JSON.parse(Buffer.from(packageJson.content, 'base64').toString())
+				const packageLockParsed = JSON.parse(Buffer.from(packageLock.content, 'base64').toString())
+
+				const auditReport = runNpmAudit({
+					package: JSON.stringify(packageJsonParsed), packageLock: JSON.stringify(packageLockParsed)
+				})
+
+				console.log(auditReport)
 			}
 		}
 
