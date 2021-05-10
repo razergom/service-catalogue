@@ -1,5 +1,6 @@
 import React from 'react'
 import { useGate, useStore } from 'effector-react'
+import { useHistory } from 'react-router-dom'
 import { servicesModel } from '../../models/services-model'
 import { registerServiceModel } from '../../models/register-service-model'
 import { RegisterServiceModal } from '../../components/register-service-modal'
@@ -18,6 +19,10 @@ export const ServicesPage = () => {
         isRemoving,
         removeConfirmationModalIsOpened,
     } = useStore(servicesModel.pageData)
+
+    const history = useHistory()
+
+    const handleRedirectToJsAudit = () => history.push('/services/audit/js')
 
     useGate(servicesModel.gate)
 
@@ -43,14 +48,31 @@ export const ServicesPage = () => {
             </ConfirmationModal>
 
             <div className={styles.control}>
-                <Button
-                    className={styles.registerBtn}
-                    variant="contained"
-                    color="default"
-                    onClick={() => registerServiceModel.openModal()}
-                >
-                    Register Service
-                </Button>
+                <div className={styles.leftBtns}>
+                    <Button
+                        className={styles.leftBtn}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => registerServiceModel.openModal()}
+                    >
+                        Register Service
+                    </Button>
+                    <Button
+                        className={styles.leftBtn}
+                        variant="contained"
+                        color="default"
+                    >
+                        Summary
+                    </Button>
+                    <Button
+                        className={styles.leftBtn}
+                        variant="contained"
+                        color="default"
+                        onClick={handleRedirectToJsAudit}
+                    >
+                        Run JS-Audit
+                    </Button>
+                </div>
                 <TextField
                     placeholder="search..."
                     value={searchString}

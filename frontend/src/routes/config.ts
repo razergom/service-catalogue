@@ -7,6 +7,9 @@ const ServicesPage = lazy(() =>
 const ServiceInfoPage = lazy(() =>
     import('../pages/service-info-page').then((page) => ({ default: page.ServiceInfoPage })))
 
+const JsAuditPage = lazy(() =>
+    import('../pages/js-audit-page').then((page) => ({ default: page.JsAuditPage })))
+
 export const routes: ReactRoute[] = [
     {
         title: 'services',
@@ -18,6 +21,12 @@ export const routes: ReactRoute[] = [
         title: 'service',
         path: '/services/:id',
         component: ServiceInfoPage,
+        exact: true,
+    },
+    {
+        title: 'js-audit',
+        path: '/services/audit/js',
+        component: JsAuditPage,
         exact: true,
     }
 ]
