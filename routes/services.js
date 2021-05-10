@@ -378,4 +378,32 @@ router.get('/audit/es', async (req, res) => {
 	}
 })
 
+router.get('/summary/tags', async (req, res) => {
+	try {
+		const services = await Service.find()
+
+		let tags = services.flatMap(s => s.tags.map(t => t))
+
+		const setOfTags = [ ...new Set(tags) ]
+
+		let summaryDict = {}
+
+		for (let i = 0; i < setOfTags.length; i++) {
+			let count = 0
+
+			for (let j = 0; j < tags.length; j++) {
+				if (tags[j] === setOfTags[i]) {
+					count = count + 1
+				}
+			}
+
+			summaryDict[setOfTags[i]] = count / services.length * 100
+		}
+
+		res.status(200).json(summaryDict)
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+})
+
 module.exports = router
