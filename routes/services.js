@@ -339,7 +339,7 @@ router.get('/audit/es', async (req, res) => {
 		const services = await Service.find()
 		const esServices = services.filter(s => s.tags.includes('js') || s.tags.includes('ts'))
 
-		let esServicesPackageJsons = []
+		const dependencyDict = {}
 
 		for (let i = 0; i < esServices.length; i++) {
 			const esService = esServices[i]
@@ -357,11 +357,22 @@ router.get('/audit/es', async (req, res) => {
 					package: JSON.stringify(packageJsonParsed), packageLock: JSON.stringify(packageLockParsed)
 				})
 
-				console.log(auditReport)
+				for (dependencyNumber in auditReport.advisories) {
+					const dependencyName = auditReport.advisories[dependencyNumber].module_name
+					if (!dependencyDict[dependencyName]) {
+						dependencyDict[dependencyName] = [{
+							name: esService.name,
+							recommendation: auditReport.advisories[dependencyNumber].recommendation,
+							_id: esService._id
+						}]
+					} else {
+						dependencyDict[dependencyName].push(esService.name)
+					}
+				}
 			}
 		}
 
-		res.status(200).json(esServicesPackageJsons)
+		res.status(200).json(dependencyDict)
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
