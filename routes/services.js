@@ -362,6 +362,7 @@ router.get('/audit/es', async (req, res) => {
 					if (!dependencyDict[dependencyName]) {
 						dependencyDict[dependencyName] = [{
 							name: esService.name,
+							description: auditReport.advisories[dependencyNumber].title,
 							recommendation: auditReport.advisories[dependencyNumber].recommendation,
 							_id: esService._id
 						}]

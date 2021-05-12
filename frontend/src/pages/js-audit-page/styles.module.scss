@@ -27,6 +27,12 @@
           display: flex;
           align-items: center;
 
+          margin-bottom: 5px;
+
+          .serviceErrorTitle {
+            color: rgba(red, 0.8);
+          }
+
           .serviceRecommendation {
             color: gray;
 
@@ -58,7 +64,7 @@
   align-items: center;
   position: fixed;
   top: 40%;
-  left: 45%;
+  left: 42%;
 
   div {
     margin-top: 20px;

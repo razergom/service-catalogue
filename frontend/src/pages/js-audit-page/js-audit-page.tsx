@@ -36,7 +36,7 @@ export const JsAuditPage = () => {
             )}
             {!isLoading && (
                 <div className={styles.auditContent}>
-                    <h2>JS-SERVICES AUDIT RESULTS</h2>
+                    <h2>JS-services audit results</h2>
                     {!dependenciesEmpty && (
                         <div className={styles.auditList}>
                             {dependencies.map(d => (
@@ -49,7 +49,9 @@ export const JsAuditPage = () => {
                                                     <Link to={`/services/${dRes._id}`} target="_blank">
                                                         <div className={styles.serviceLink}>{dRes.name}</div>
                                                     </Link>
-                                                    <div className={styles.serviceRecommendation}> ({dRes.recommendation})</div>
+                                                    <div>&nbsp;&nbsp; - &nbsp;&nbsp;</div>
+                                                    <div className={styles.serviceErrorTitle}>{dRes.description}</div>
+                                                    <div className={styles.serviceRecommendation}>({dRes.recommendation})</div>
                                                 </div>
                                             ))}
                                         </div>
