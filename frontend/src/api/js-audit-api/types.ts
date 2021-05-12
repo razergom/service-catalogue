@@ -3,5 +3,5 @@ export type JsAuditDto = {
         _id: string
         name: string
         recommendation: string
-    }
+    }[]
 }

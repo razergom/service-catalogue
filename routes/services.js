@@ -12,7 +12,7 @@ const getFileContentFromGithub = async (githubUrl) => {
 
 	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/${parsedGithubData.filepath}`
 
-	return axios.get(githubApiFileUrl)
+	return axios.get(githubApiFileUrl, { headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` } })
 }
 
 const getPackageJsonFromGithub = async (githubUrl) => {
@@ -20,7 +20,7 @@ const getPackageJsonFromGithub = async (githubUrl) => {
 
 	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/package.json`
 
-	const res = await axios.get(githubApiFileUrl)
+	const res = await axios.get(githubApiFileUrl, { headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` } })
 
 	return res.data
 }
@@ -30,7 +30,7 @@ const getPackageLockFromGithub = async (githubUrl) => {
 
 	const githubApiFileUrl = `https://api.github.com/repos/${parsedGithubData.repository}/contents/package-lock.json`
 
-	const res = await axios.get(githubApiFileUrl)
+	const res = await axios.get(githubApiFileUrl, { headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` } })
 
 	return res.data
 }

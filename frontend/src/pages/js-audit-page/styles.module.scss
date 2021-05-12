@@ -1,3 +1,66 @@
 .pageContent {
+  height: 100%;
 
+  .auditContent {
+    h2 {
+      margin-top: 40px;
+    }
+
+    .auditList {
+      height: calc(100vh - 280px);
+
+      overflow-y: auto;
+
+      margin-top: 50px;
+
+      .dependency {
+        font-weight: bold;
+        font-size: 24px;
+
+        margin-bottom: 15px;
+      }
+
+      .serviceWrapper {
+        .service {
+          padding-left: 24px;
+
+          display: flex;
+          align-items: center;
+
+          .serviceRecommendation {
+            color: gray;
+
+            margin-left: 10px;
+          }
+
+          &:last-child {
+            margin-bottom: 15px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.serviceLink {
+  color: blue;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 40%;
+  left: 45%;
+
+  div {
+    margin-top: 20px;
+  }
 }

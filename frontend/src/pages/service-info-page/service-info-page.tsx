@@ -2,11 +2,11 @@ import React from 'react'
 import { useGate, useStore } from 'effector-react'
 import { useParams, useHistory } from 'react-router-dom'
 import { serviceInfoModel } from '../../models/service-info-model'
-import {BuildStatus, ServiceId} from '../../api/services-api'
+import { BuildStatus, ServiceId } from '../../api/services-api'
 import { IdBanner } from '../../components/id-banner'
 import { Loader } from '../../components/loader'
 import { ProgressBar } from '../../components/progress-bar'
-import { Button, Tooltip, Tabs, Tab, InputAdornment, TextField} from '@material-ui/core'
+import { Button, Tooltip, Tabs, Tab, InputAdornment, TextField } from '@material-ui/core'
 import { Search } from '@material-ui/icons'
 import styles from './styles.module.scss'
 
@@ -58,7 +58,7 @@ export const ServiceInfoPage = () => {
                 color="primary"
                 onClick={handleRedirect}
             >
-                Back to services
+                Go to services
             </Button>
             <IdBanner idValue={service._id} name={service.name} />
             <Tabs indicatorColor="primary" className={styles.tabs} value={tab} onChange={handleTabChange}>
