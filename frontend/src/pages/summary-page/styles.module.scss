@@ -1,9 +1,59 @@
 .pageContent {
+  h2 {
+    padding-left: 15px;
+  }
 
+  h3 {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .pieContent {
+    padding: 20px;
+
+    margin-left: 200px;
+    margin-right: 200px;
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 50px;
+
+    .summaryInfo {
+      max-height: calc(100vh - 400px);
+      overflow-y: auto;
+
+      .legendWrapper {
+        display: flex;
+        align-items: center;
+
+        margin-bottom: 10px;
+
+        .legendColor {
+          width: 50px;
+          height: 20px;
+        }
+
+        .legendTag {
+          margin-left: 10px;
+          font-weight: bold;
+        }
+
+        .legendValue {
+          margin-left: 10px;
+          color: #828282;
+        }
+      }
+    }
+
+    .pieWrapper {
+      width: calc(100vh - 300px);
+    }
+  }
 }
 
 .loader {
   position: fixed;
   top: 50%;
-  left: 48%;
+  left: 47%;
 }
