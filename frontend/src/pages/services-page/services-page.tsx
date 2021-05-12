@@ -23,6 +23,7 @@ export const ServicesPage = () => {
     const history = useHistory()
 
     const handleRedirectToJsAudit = () => history.push('/services/audit/js')
+    const handleRedirectToSummary = () => history.push('/services/summary/diagram')
 
     useGate(servicesModel.gate)
 
@@ -61,6 +62,7 @@ export const ServicesPage = () => {
                         className={styles.leftBtn}
                         variant="contained"
                         color="default"
+                        onClick={handleRedirectToSummary}
                     >
                         Summary
                     </Button>

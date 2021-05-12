@@ -401,7 +401,16 @@ router.get('/summary/tags', async (req, res) => {
 			summaryDict[setOfTags[i]] = count / services.length * 100
 		}
 
-		res.status(200).json(summaryDict)
+		const resultData = []
+
+		for (const key in summaryDict) {
+			resultData.push({
+				tag: key,
+				percent: summaryDict[key],
+			})
+		}
+
+		res.status(200).json(resultData)
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
