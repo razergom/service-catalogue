@@ -45,6 +45,9 @@ const getService = async (req, res, next) => {
 			return res.status(404).json({ message: `Service not found. (id: ${req.params.id})` })
 		}
 
+		const tmp = [...service.builds]
+		service.builds = tmp.reverse()
+
 		res.service = service
 
 		next()
@@ -269,7 +272,7 @@ router.patch('/:id/builds/:buildId/tests', getService, getBuild, async (req, res
 
 			testData.testReport = {
 				filename: req.body.testReport.filename,
-				data: fileData.buffer.data,
+				data: fileData.buffer,
 			}
 		}
 
@@ -317,7 +320,7 @@ router.patch('/:id/builds/:buildId/changelog', getService, getBuild, async (req,
 			if (b.id === build.id) {
 				b.changelog = {
 					filename: req.body.filename,
-					data: fileData.buffer.data,
+					data: fileData.buffer,
 				}
 
 				return b
