@@ -44,7 +44,7 @@ export const JsAuditPage = () => {
             {!isLoading && (
                 <div className={styles.auditContent}>
                     <div className={styles.control}>
-                        <h2>JS-services audit results</h2>
+                        <h2>JS-services audit results ({foundedDependencies.length} vulnerabilities)</h2>
                         <TextField
                             placeholder="search..."
                             value={searchString}
