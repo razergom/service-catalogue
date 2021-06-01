@@ -370,7 +370,12 @@ router.get('/audit/es', async (req, res) => {
 							_id: esService._id
 						}]
 					} else {
-						dependencyDict[dependencyName].push(esService.name)
+						dependencyDict[dependencyName].push({
+							name: esService.name,
+							description: auditReport.advisories[dependencyNumber].title,
+							recommendation: auditReport.advisories[dependencyNumber].recommendation,
+							_id: esService._id
+						})
 					}
 				}
 			}
