@@ -69,7 +69,7 @@ export const SummaryPage = () => {
                             <div key={Math.random() * Date.now()} className={styles.legendWrapper}>
                                 <div style={{ backgroundColor: colors[index] }} className={styles.legendColor} />
                                 <div className={styles.legendTag}>{s.tag.toUpperCase()}</div>
-                                <div className={styles.legendValue}>({s.percent}%)</div>
+                                <div className={styles.legendValue}>({Number(s.percent).toFixed(2)}%)</div>
                             </div>
                         ))}
                     </div>
